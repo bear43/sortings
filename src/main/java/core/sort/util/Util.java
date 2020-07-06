@@ -1,4 +1,4 @@
-package core.sort;
+package core.sort.util;
 
 import java.util.function.Predicate;
 

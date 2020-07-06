@@ -1,11 +1,27 @@
 package core.sort.gnome;
 
-import core.sort.ISort;
-import core.sort.Util;
+import core.sort.AbstractSort;
+import core.sort.util.SlowSort;
+import core.sort.util.Util;
+import core.sort.interfaces.ISortState;
+import core.sort.interfaces.SortType;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 @Component
-public class GnomeSort <ObjectType extends Comparable<ObjectType>> implements ISort<ObjectType> {
+@SlowSort
+public class GnomeSort <ObjectType extends Comparable<ObjectType>> extends AbstractSort<ObjectType> {
+
+    public GnomeSort() {
+        super(SortType.SLOW);
+    }
+
+    public GnomeSort(@NonNull List<Consumer<ISortState>> subscribers) {
+        super(SortType.SLOW, subscribers);
+    }
 
     @Override
     public String getName() {
@@ -23,9 +39,9 @@ public class GnomeSort <ObjectType extends Comparable<ObjectType>> implements IS
     * */
 
     @Override
-    public void sort(ObjectType[] unsortedArray) {
-        int index = 1;
-        while(index < unsortedArray.length) {
+    public void sort(ObjectType[] unsortedArray, int startIndex, int endIndex) {
+        int index = startIndex+1;
+        while(index <= endIndex) {
             if(index == 0) {
                 index++;
             }

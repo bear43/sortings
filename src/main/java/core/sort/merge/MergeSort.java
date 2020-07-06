@@ -1,15 +1,29 @@
 package core.sort.merge;
 
-import core.sort.ISort;
+import core.sort.AbstractSort;
+import core.sort.interfaces.ISortState;
+import core.sort.interfaces.SortType;
+import core.sort.util.FastSort;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 @Component
-public class MergeSort <ObjectType extends Comparable<ObjectType>> implements ISort<ObjectType> {
+@FastSort
+public class MergeSort <ObjectType extends Comparable<ObjectType>> extends AbstractSort<ObjectType> {
 
     private Class<ObjectType> objectClass;
+
+    public MergeSort() {
+        super(SortType.FAST);
+    }
+
+    public MergeSort(@NonNull List<Consumer<ISortState>> subscribers) {
+        super(SortType.FAST, subscribers);
+    }
 
     @Override
     public String getName() {
@@ -73,10 +87,10 @@ public class MergeSort <ObjectType extends Comparable<ObjectType>> implements IS
 
     @SuppressWarnings("unchecked")
     @Override
-    public void sort(ObjectType[] unsortedArray) {
+    public void sort(ObjectType[] unsortedArray, int startIndex, int endIndex) {
         if(unsortedArray.length > 1) {
             objectClass = (Class<ObjectType>) unsortedArray[0].getClass();
-            merge(unsortedArray, 0, unsortedArray.length - 1);
+            merge(unsortedArray, startIndex, endIndex);
         }
     }
 }
