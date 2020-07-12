@@ -2,14 +2,16 @@ package core.sort.util;
 
 import core.sort.interfaces.ISortState;
 
-public class DoubleSortState implements ISortState {
+public class DoubleSortState <ObjectType extends Number & Comparable<ObjectType>> implements ISortState<ObjectType> {
 
+    private final ObjectType[] array;
     private final int leftIndex;
     private final int rightIndex;
 
-    public DoubleSortState(final int leftIndex, final int rightIndex) {
+    public DoubleSortState(final ObjectType[] array, final int leftIndex, final int rightIndex) {
         this.leftIndex = leftIndex;
         this.rightIndex = rightIndex;
+        this.array = array;
     }
 
     @Override
@@ -33,5 +35,10 @@ public class DoubleSortState implements ISortState {
                 leftIndex,
                 rightIndex
         };
+    }
+
+    @Override
+    public ObjectType[] getSortingArray() {
+        return array;
     }
 }

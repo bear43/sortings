@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 @Component
 @SlowSort
-public class BubbleSort<ObjectType extends Comparable<ObjectType>> extends AbstractSort<ObjectType> {
+public class BubbleSort<ObjectType extends Number & Comparable<ObjectType>> extends AbstractSort<ObjectType> {
 
     public BubbleSort(ISortStateInformer informer) {
         super(SortType.SLOW, informer);
@@ -42,10 +42,10 @@ public class BubbleSort<ObjectType extends Comparable<ObjectType>> extends Abstr
     public void sort(ObjectType[] unsortedArray, int startIndex, int endIndex) {
         for(int i = startIndex; i <= endIndex; i++) {
             for(int j = startIndex; j < endIndex-i; j++) {
-                informer.onStateChange(new DoubleSortState(j, j+1));
+                informer.onStateChange(new DoubleSortState(unsortedArray, j, j+1));
                 if(unsortedArray[j].compareTo(unsortedArray[j+1]) > 0) {
                     Util.swap(unsortedArray, j, j+1);
-                    informer.onStateChange(new DoubleSortState(j+1, j));
+                    informer.onStateChange(new DoubleSortState(unsortedArray,j+1, j));
                 }
             }
         }

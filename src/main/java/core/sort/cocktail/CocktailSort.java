@@ -1,5 +1,6 @@
 package core.sort.cocktail;
 
+import core.sort.util.DoubleSortState;
 import core.sort.util.SlowSort;
 import core.sort.util.Util;
 import core.sort.bubble.BubbleSort;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 
 @Component
 @SlowSort
-public class CocktailSort<ObjectType extends Comparable<ObjectType>> extends BubbleSort<ObjectType> {
+public class CocktailSort<ObjectType extends Number & Comparable<ObjectType>> extends BubbleSort<ObjectType> {
 
     public CocktailSort() {
     }
@@ -31,14 +32,18 @@ public class CocktailSort<ObjectType extends Comparable<ObjectType>> extends Bub
         int leftBorder = startIndex, rightBorder = endIndex;
         while(leftBorder < rightBorder) {
             for(int index = leftBorder; index < rightBorder; index++) {
+                informer.onStateChange(new DoubleSortState(unsortedArray, index, index+1));
                 if(unsortedArray[index].compareTo(unsortedArray[index+1]) > 0) {
                     Util.swap(unsortedArray, index, index+1);
+                    informer.onStateChange(new DoubleSortState(unsortedArray, index+1, index));
                 }
             }
             rightBorder--;
             for(int index = rightBorder; index > leftBorder; index--) {
+                informer.onStateChange(new DoubleSortState(unsortedArray, index-1, index));
                 if(unsortedArray[index].compareTo(unsortedArray[index-1]) < 0) {
                     Util.swap(unsortedArray, index, index-1);
+                    informer.onStateChange(new DoubleSortState(unsortedArray, index, index-1));
                 }
             }
             leftBorder++;
